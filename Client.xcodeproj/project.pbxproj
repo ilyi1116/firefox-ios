@@ -138,6 +138,7 @@
 		28F657EA1ABFCA7A00A608BD /* LiveAccountTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA4363B1ABB8448008031D1 /* LiveAccountTest.swift */; };
 		28FDFF0C1C1F725800840F86 /* SeparatorTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FDFF0B1C1F725800840F86 /* SeparatorTableCell.swift */; };
 		2C2A5EF41E68469500F02659 /* PrivateBrowsingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2A5EF31E68469500F02659 /* PrivateBrowsingTest.swift */; };
+		2C3406C81E719F00000FD889 /* SettingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3406C71E719F00000FD889 /* SettingsTest.swift */; };
 		2CA16FDE1E5F089100332277 /* SearchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA16FDD1E5F089100332277 /* SearchTest.swift */; };
 		2F13E79B1AC0C02700D75081 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */; };
 		2F14E13A1ABB890800FF98DB /* Account-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 2F14E1391ABB890800FF98DB /* Account-Bridging-Header.h */; };
@@ -1309,6 +1310,7 @@
 		28F596A01ACA13CA0071DDCC /* InfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InfoTests.swift; path = SyncTests/InfoTests.swift; sourceTree = "<group>"; };
 		28FDFF0B1C1F725800840F86 /* SeparatorTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorTableCell.swift; sourceTree = "<group>"; };
 		2C2A5EF31E68469500F02659 /* PrivateBrowsingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateBrowsingTest.swift; sourceTree = "<group>"; };
+		2C3406C71E719F00000FD889 /* SettingsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTest.swift; sourceTree = "<group>"; };
 		2CA16FDD1E5F089100332277 /* SearchTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTest.swift; sourceTree = "<group>"; };
 		2F13E79A1AC0C02700D75081 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		2F14E1391ABB890800FF98DB /* Account-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Account-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -2586,6 +2588,7 @@
 			isa = PBXGroup;
 			children = (
 				0B305E1A1E3A98A900BE0767 /* BookmarkingTests.swift */,
+				2C3406C71E719F00000FD889 /* SettingsTest.swift */,
 				0B3D670D1E09B90B00C1EFC7 /* AuthenticationTest.swift */,
 				0B729D361E047D6A008E6859 /* HomePageSettingsTest.swift */,
 				3BF4B8DA1D38493300493393 /* Utils */,
@@ -4928,6 +4931,7 @@
 				39EB469A1E26DDB4006346E8 /* FxScreenGraph.swift in Sources */,
 				0B729D371E047D6A008E6859 /* HomePageSettingsTest.swift in Sources */,
 				55A747171DC46FC400CE1B57 /* HomePageUITest.swift in Sources */,
+				2C3406C81E719F00000FD889 /* SettingsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6905,7 +6909,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Client/Entitlements/$(PRODUCT_NAME:rfc1034identifier).entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-                               ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
