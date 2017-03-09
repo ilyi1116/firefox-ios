@@ -7,9 +7,10 @@ import Shared
 import WebKit
 import UIKit
 import GCDWebServers
+import SwiftyJSON
 
 class ClearPrivateDataTests: KIFTestCase, UITextFieldDelegate {
-/*
+
     fileprivate var webRoot: String!
 
     override func setUp() {
@@ -27,12 +28,12 @@ class ClearPrivateDataTests: KIFTestCase, UITextFieldDelegate {
         var urls: [(title: String, domain: String, dispDomain: String, url: String)] = []
         for pageNo in 1...noOfSites {
             tester().tapView(withAccessibilityIdentifier: "url")
-            let url = "\(webRoot)/numberedPage.html?page=\(pageNo)"
+            let url = "\(webRoot!)/numberedPage.html?page=\(pageNo)"
             tester().clearTextFromAndThenEnterText(intoCurrentFirstResponder: "\(url)\n")
             tester().waitForWebViewElementWithAccessibilityLabel("Page \(pageNo)")
             let dom = URL(string: url)!.normalizedHost!
-            let index = dom.startIndex.advancedBy(7)
-            let dispDom = dom.substringToIndex(index)   // On IPhone, it only displays first 8 chars
+            let index = dom.index(dom.startIndex, offsetBy: 7)
+            let dispDom = dom.substring(to: index)  // On IPhone, it only displays first 8 chars
             let tuple: (title: String, domain: String, dispDomain: String, url: String) = ("Page \(pageNo)", dom, dispDom, url)
             urls.append(tuple)
         }
@@ -42,12 +43,20 @@ class ClearPrivateDataTests: KIFTestCase, UITextFieldDelegate {
 
     func anyDomainsExistOnTopSites(_ domains: Set<String>, fulldomains: Set<String>) {
         for domain in domains {
+            let withoutDot = domain.replacingOccurrences(of: ".", with: " ")
             if self.tester().viewExistsWithLabel(domain) {
+                return
+            }
+            if self.tester().viewExistsWithLabel(withoutDot) {
                 return
             }
         }
         for domain in fulldomains {
-            if self.tester().viewExistsWithLabel(domain) {
+             let withoutDot = domain.replacingOccurrences(of: ".", with: " ")
+             if self.tester().viewExistsWithLabel(domain) {
+                return
+            }
+            if self.tester().viewExistsWithLabel(withoutDot) {
                 return
             }
         }
@@ -131,7 +140,7 @@ class ClearPrivateDataTests: KIFTestCase, UITextFieldDelegate {
 
     func testClearsCookies() {
         tester().tapView(withAccessibilityIdentifier: "url")
-        let url = "\(webRoot)/numberedPage.html?page=1"
+        let url = "\(webRoot!)/numberedPage.html?page=1"
         tester().clearTextFromAndThenEnterText(intoCurrentFirstResponder: "\(url)\n")
         tester().waitForWebViewElementWithAccessibilityLabel("Page 1")
 
@@ -155,8 +164,8 @@ class ClearPrivateDataTests: KIFTestCase, UITextFieldDelegate {
         BrowserUtils.clearPrivateData([BrowserUtils.Clearable.Cookies], swipe: true, tester: tester())
         cookies = getCookies(webView)
         XCTAssertEqual(cookies.cookie, "")
-        XCTAssertNil(cookies.localStorage)
-        XCTAssertNil(cookies.sessionStorage)
+        XCTAssertEqual(cookies.localStorage, "null")
+        XCTAssertEqual(cookies.sessionStorage, "null")
     }
 
     func testClearsCache() {
@@ -191,16 +200,23 @@ class ClearPrivateDataTests: KIFTestCase, UITextFieldDelegate {
 
     fileprivate func getCookies(_ webView: WKWebView) -> (cookie: String, localStorage: String?, sessionStorage: String?) {
         var cookie: (String, String?, String?)!
+        var value: String!
         let expectation = self.expectation(description: "Got cookie")
+        
         webView.evaluateJavaScript("JSON.stringify([document.cookie, localStorage.cookie, sessionStorage.cookie])") { result, _ in
-            let cookies = JSON(parseJSON: result as! String).asArray!
-            cookie = (cookies[0].asString!, cookies[1].asString, cookies[2].asString)
+            value = result as! String
             expectation.fulfill()
         }
+        
         waitForExpectations(timeout: 10, handler: nil)
+        value = value.replacingOccurrences(of: "[", with: "")
+        value = value.replacingOccurrences(of: "]", with: "")
+        value = value.replacingOccurrences(of: "\"", with: "")
+        let items = value.components(separatedBy: ",")
+        cookie = (items[0], items[1], items[2])
         return cookie
     }
-    */
+    
 }
 
 /// Server that keeps track of requests.
@@ -218,7 +234,8 @@ private class CachedPageServer {
 
         // We use 127.0.0.1 explicitly here, rather than localhost, in order to avoid our
         // history exclusion code (Bug 1188626).
-        let webRoot = "http://127.0.0.1:\(webServer?.port)"
+        let port = (webServer?.port)!
+        let webRoot = "http://127.0.0.1:\(port)"
         return webRoot
     }
 }
